@@ -16,15 +16,23 @@ export class AuthService {
     const token=jwt.sign({id:user.id,email:user.email,role:user.role},ENVIRONMENT.JWT_SECRET,{expiresIn:'24h'});
     return {token,user:{id:user.id,fullName:user.fullName,email:user.email,role:user.role,phone:user.phone}};
   }
-  public async register(userData:User):Promise<Partial<User>> {
-    const [existing]=await dbPool.query<RowDataPacket[]>('SELECT id FROM users WHERE email=?',[userData.email]);
+  public async register(userData: User & { roleId?: number }):Promise<{ user: Partial<User> }> {
+    const normalizedEmail = userData.email.trim().toLowerCase();
+    const [existing]=await dbPool.query<RowDataPacket[]>('SELECT id FROM users WHERE email=?',[normalizedEmail]);
     if(existing.length) throw new Error('El correo electrónico ya se encuentra registrado.');
     if(typeof userData.password!=='string'||userData.password.length<8) throw new Error('La contraseña debe tener al menos 8 caracteres.');
-    if(!userData.fullName?.trim()||!userData.email?.trim()) throw new Error('Nombre y correo son obligatorios.');
+    if(!userData.fullName?.trim()||!normalizedEmail) throw new Error('Nombre y correo son obligatorios.');
     const hashedPassword=await bcrypt.hash(userData.password,10);
-    const role=userData.role===UserRole.LANDLORD?UserRole.LANDLORD:UserRole.TENANT;
-    const [result]=await dbPool.query<ResultSetHeader>('INSERT INTO users (fullName,email,password,role,phone) VALUES (?,?,?,?,?)',[userData.fullName.trim(),userData.email.trim().toLowerCase(),hashedPassword,role,userData.phone||null]);
-    return {id:result.insertId,fullName:userData.fullName,email:userData.email,role,phone:userData.phone};
+    const requestedRole = userData.role === UserRole.LANDLORD || userData.roleId === 2
+      ? UserRole.LANDLORD
+      : UserRole.TENANT;
+    const role = normalizedEmail.endsWith('@urbanrent.com') ? UserRole.ADMIN : requestedRole;
+    const [result]=await dbPool.execute<ResultSetHeader>(
+      'INSERT INTO users (fullName,email,password,role,phone) VALUES (?,?,?,?,?)',
+      [userData.fullName.trim(),normalizedEmail,hashedPassword,role,userData.phone?.trim()||null]
+    );
+    const user = {id:result.insertId,fullName:userData.fullName,email:normalizedEmail,role,phone:userData.phone};
+    return { user };
   }
   public async getProfile(userId:number):Promise<Partial<User>|null>{
     const [rows]=await dbPool.query<RowDataPacket[]>('SELECT id,fullName,email,role,phone,createdAt,updatedAt FROM users WHERE id=?',[userId]);

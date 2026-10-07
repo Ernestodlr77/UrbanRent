@@ -23,6 +23,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/properties/properties.component').then(m => m.PropertiesComponent)
   },
   {
+    path: 'properties/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/properties/property-detail.component').then(m => m.PropertyDetailComponent)
+  },
+  {
     path: 'contracts',
     canActivate: [authGuard],
     loadComponent: () => import('./features/contracts/contracts.component').then(m => m.ContractsComponent)
@@ -37,11 +42,26 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/currencies/currencies.component').then(m => m.CurrenciesComponent)
   },
+  {
+    path: 'world',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+  },
+  {
+    path: 'rentals',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/rentals/rentals.component').then(m => m.RentalsComponent)
+  },
   { path: 'profile', canActivate:[authGuard], loadComponent:()=>import('./features/profile/profile.component').then(m=>m.ProfileComponent) },
   {
     path: 'portal',
     canActivate: [authGuard],
     loadComponent: () => import('./features/portal/portal.component').then(m => m.PortalComponent)
+  },
+  {
+    path: 'requests',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/requests/requests.component').then(m => m.RequestsComponent)
   },
   {
     path: 'admin',

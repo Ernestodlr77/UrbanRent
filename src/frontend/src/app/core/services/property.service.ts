@@ -25,6 +25,9 @@ export class PropertyService {
     let params=new HttpParams(); Object.entries(filters).forEach(([k,v])=>{if(v!==undefined && v!==null && v!=='')params=params.set(k,String(v));});
     return this.http.get<PropertyPage>(this.apiUrl,{params});
   }
+  getRentals():Observable<Property[]>{
+    return this.http.get<Property[]>(`${this.apiUrl}/rentals`);
+  }
   getById(id:number){return this.http.get<Property>(`${this.apiUrl}/${id}`)}
   create(data:Partial<Property>){return this.http.post(`${this.apiUrl}`,data)}
   update(id:number,data:Partial<Property>){return this.http.put(`${this.apiUrl}/${id}`,data)}

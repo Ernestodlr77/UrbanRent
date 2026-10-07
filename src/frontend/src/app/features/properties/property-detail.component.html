@@ -1,0 +1,87 @@
+<div class="property-detail-page">
+  <header class="top-header">
+    <div class="brand">
+      <strong>UrbanRent</strong>
+      <span>· Plataforma de gestión inmobiliaria</span>
+    </div>
+    <div class="user-section">
+      <span>{{ userName }}</span>
+      <button class="logout-button" type="button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="detail-container">
+    <div class="detail-header">
+      <span class="brand-detail">URBANRENT</span>
+      <a routerLink="/properties" class="back-link">← Volver a inmuebles</a>
+    </div>
+
+    <p *ngIf="loading" class="state">Cargando inmueble...</p>
+    <p *ngIf="!loading && errorMessage" class="state error">{{ errorMessage }}</p>
+
+    <ng-container *ngIf="property as inmueble">
+      <div class="breadcrumb">
+        <a routerLink="/properties">Inmuebles</a><span>/</span><span>Detalles</span>
+      </div>
+
+      <section class="property-title">
+        <div class="title-information">
+          <span class="property-type">{{ inmueble.propertyType || 'INMUEBLE' }}</span>
+          <h1>{{ inmueble.title }}</h1>
+          <p class="location">📍 {{ inmueble.city || 'Ciudad no especificada' }}, {{ inmueble.countryName || 'Guatemala' }}</p>
+        </div>
+        <div class="price-card">
+          <span class="price-label">Precio mensual</span>
+          <strong>{{ inmueble.monthlyRent | number:'1.0-0' }} {{ inmueble.currencyCode || 'GTQ' }}</strong>
+          <small>por mes</small>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="left-content">
+          <section class="information-card">
+            <h2>Descripción</h2>
+            <p class="description">{{ inmueble.description || 'No hay una descripción disponible para este inmueble.' }}</p>
+          </section>
+
+          <section class="information-card">
+            <h2>Características del inmueble</h2>
+            <div class="features-grid">
+              <div class="feature-item"><div class="feature-icon">🏠</div><div><strong>{{ inmueble.propertyType || 'No especificado' }}</strong><span>Tipo de inmueble</span></div></div>
+              <div class="feature-item"><div class="feature-icon">📐</div><div><strong>{{ inmueble.address ? 'Disponible' : 'No especificada' }}</strong><span>Ubicación registrada</span></div></div>
+              <div class="feature-item"><div class="feature-icon">💰</div><div><strong>{{ inmueble.currencyCode || 'GTQ' }}</strong><span>Moneda de renta</span></div></div>
+              <div class="feature-item"><div class="feature-icon">✓</div><div><strong>{{ inmueble.status || 'No especificado' }}</strong><span>Estado</span></div></div>
+            </div>
+          </section>
+
+          <section class="information-card">
+            <h2>Servicios y comodidades</h2>
+            <div class="services-grid">
+              <div class="service-item"><span>✓</span>Información verificada</div>
+              <div class="service-item"><span>✓</span>Ubicación registrada</div>
+              <div class="service-item"><span>✓</span>Datos de contacto disponibles</div>
+              <div class="service-item"><span>✓</span>Gestión desde UrbanRent</div>
+            </div>
+          </section>
+
+          <section class="information-card">
+            <h2>Ubicación</h2>
+            <div class="location-information">
+              <div><span class="location-label">Dirección</span><strong>{{ inmueble.address || 'Dirección no especificada' }}</strong></div>
+              <div><span class="location-label">Ciudad</span><strong>{{ inmueble.city || 'Ciudad no especificada' }}, {{ inmueble.countryName || 'Guatemala' }}</strong></div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="side-card">
+          <span class="side-label">ALQUILER MENSUAL</span>
+          <div class="side-price"><strong>{{ inmueble.monthlyRent | number:'1.0-0' }}</strong><span>{{ inmueble.currencyCode || 'GTQ' }} / mes</span></div>
+          <div class="side-information"><span>Tipo de inmueble</span><strong>{{ inmueble.propertyType || 'No especificado' }}</strong></div>
+          <div class="side-information"><span>Disponibilidad</span><strong class="available">{{ inmueble.status || 'No especificada' }}</strong></div>
+          <button class="request-button" type="button" routerLink="/portal">Solicitar alquiler</button>
+          <a routerLink="/properties" class="return-button">Volver a los inmuebles</a>
+        </aside>
+      </section>
+    </ng-container>
+  </main>
+</div>

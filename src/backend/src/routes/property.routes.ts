@@ -12,6 +12,7 @@ router.use(authenticateJWT);
 
 // Obtener todas las propiedades y buscar por ID
 router.get('/', propertyController.getAll);
+router.get('/rentals', propertyController.getRentals);
 router.get('/:id', propertyController.getById);
 
 // Crear, actualizar y eliminar propiedades (Restringido a ADMIN y LANDLORD)

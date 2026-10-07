@@ -37,8 +37,8 @@ export class AuthService {
     );
   }
 
-  register(data: RegistrationData): Observable<{ message: string; user: RegistrationData }> {
-    return this.http.post<{ message: string; user: RegistrationData }>(`${this.apiUrl}/register`, data);
+  register(data: RegistrationData): Observable<{ message: string; user: AuthResponse['user'] }> {
+    return this.http.post<{ message: string; user: AuthResponse['user'] }>(`${this.apiUrl}/register`, data);
   }
 
   logout(): void {
@@ -48,6 +48,19 @@ export class AuthService {
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getStoredUser(): AuthResponse['user'] | null {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(user) as AuthResponse['user'];
+    } catch {
+      return null;
+    }
   }
 
   isAuthenticated(): boolean {

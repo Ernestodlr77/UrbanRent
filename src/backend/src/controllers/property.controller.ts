@@ -19,6 +19,15 @@ export class PropertyController {
     }
   };
 
+  // GET /api/properties/rentals
+  public getRentals = async (_req: Request, res: Response): Promise<void> => {
+    try {
+      res.status(200).json(await this.propertyService.getRentalProperties());
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || 'Error al obtener inmuebles de alquiler.' });
+    }
+  };
+
   // GET /api/properties/:id
   public getById = async (req: Request, res: Response): Promise<void> => {
     try {

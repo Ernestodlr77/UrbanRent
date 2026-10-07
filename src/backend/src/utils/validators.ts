@@ -12,6 +12,7 @@ export function validateRegistration(body: any): ValidationResult {
   if (typeof body.password !== 'string' || body.password.length < 8) return { valid:false, message:'La contraseña debe tener al menos 8 caracteres.' };
   if (body.phone !== undefined && body.phone !== null && typeof body.phone !== 'string') return { valid:false, message:'El teléfono debe ser texto.' };
   if (body.role !== undefined && !['LANDLORD','TENANT'].includes(body.role)) return { valid:false, message:'El rol de registro no es válido.' };
+  if (body.roleId !== undefined && ![2, 3].includes(Number(body.roleId))) return { valid:false, message:'El tipo de usuario no es válido.' };
   return { valid:true };
 }
 

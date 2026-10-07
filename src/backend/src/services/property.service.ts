@@ -4,10 +4,21 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2';
 
 const PROPERTY_COLUMNS = `
   id, landlordId, title, description, address, city, countryCode, countryName,
-  propertyType, monthlyRent, currencyCode, latitude, longitude, status, createdAt, updatedAt
+  propertyType, monthlyRent, currencyCode, latitude, longitude, status, isRental, createdAt, updatedAt
 `;
 
 export class PropertyService {
+  public async getRentalProperties(): Promise<Property[]> {
+    const [rows] = await dbPool.query<RowDataPacket[]>(
+      `SELECT ${PROPERTY_COLUMNS}
+       FROM properties
+       WHERE status = ? AND isRental = 1 AND propertyType IN (?, ?)
+       ORDER BY countryName, city, title`,
+      [PropertyStatus.AVAILABLE, PropertyType.HOUSE, PropertyType.APARTMENT]
+    );
+    return rows as Property[];
+  }
+
   public async getAllProperties(options: { page?: number; limit?: number; search?: string; status?: string; type?: string; country?: string } = {}): Promise<{ data: Property[]; pagination: { page:number; limit:number; total:number; totalPages:number } }> {
     const page = Math.max(1, Number(options.page) || 1);
     const limit = Math.min(100, Math.max(1, Number(options.limit) || 12));

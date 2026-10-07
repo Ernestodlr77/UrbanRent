@@ -26,6 +26,7 @@ export interface Property {
   latitude: number;
   longitude: number;
   status: PropertyStatus;
+  isRental?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

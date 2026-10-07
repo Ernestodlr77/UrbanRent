@@ -19,7 +19,10 @@
         <input id="password" type="password" formControlName="password" class="form-control" placeholder="••••••••" />
         <p *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="form-error">La contraseña debe tener al menos 8 caracteres.</p>
       </div>
-      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">Ingresar al Sistema</button>
+      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || loading">
+        {{ loading ? 'Ingresando...' : 'Ingresar al Sistema' }}
+      </button>
+      <p *ngIf="errorMessage" class="form-error">{{ errorMessage }}</p>
     </form>
 
     <div class="auth-footer">

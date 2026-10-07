@@ -1,0 +1,29 @@
+<div class="sidebar-container">
+  <div class="logo">
+    <span class="logo-mark"></span>
+    <span>UrbanRent</span>
+  </div>
+
+  <nav class="menu">
+    <div class="menu-title">GESTIÓN</div>
+
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Dashboard
+    </a>
+    <a routerLink="/properties" routerLinkActive="active">Inmuebles</a>
+    <a routerLink="/contracts" routerLinkActive="active">Contratos</a>
+    <a routerLink="/payments" routerLinkActive="active">Pagos y cobranza</a>
+    <a routerLink="/currencies" routerLinkActive="active">Monedas</a>
+    <a routerLink="/world" routerLinkActive="active">Mundo</a>
+
+    <div class="menu-title">ALQUILER</div>
+
+    <a routerLink="/rentals" routerLinkActive="active">🏠 Alquilar casa</a>
+    <a routerLink="/portal" routerLinkActive="active">Portal del inquilino</a>
+    <a routerLink="/profile" routerLinkActive="active">Mi perfil</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    UrbanRent · Gestión inmobiliaria
+  </div>
+</div>

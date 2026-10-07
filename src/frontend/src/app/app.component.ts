@@ -10,21 +10,8 @@ import { SidebarComponent } from './shared/sidebar.component';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, NavbarComponent, SidebarComponent],
-  template: `
-    @if (showApplicationShell()) {
-      <div class="flex min-h-screen bg-slate-100">
-        <app-sidebar></app-sidebar>
-        <div class="flex-1 flex flex-col">
-          <app-navbar></app-navbar>
-          <main class="flex-1">
-            <router-outlet></router-outlet>
-          </main>
-        </div>
-      </div>
-    } @else {
-      <router-outlet></router-outlet>
-    }
-  `
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
   private router = inject(Router);
@@ -43,7 +30,7 @@ export class AppComponent {
 
   private updateShellVisibility(url: string): void {
     const route = url.split(/[?#]/, 1)[0];
-    const publicRoute = route === '/login' || route === '/register' || route === '/dashboard' || route === '/portal';
+    const publicRoute = route === '/login' || route === '/register';
     this.showApplicationShell.set(!publicRoute);
   }
 }
