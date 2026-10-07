@@ -1,25 +1,4 @@
-<div class="dashboard-shell">
-  <aside class="dashboard-sidebar">
-    <a routerLink="/dashboard" class="logo"><i></i>UrbanRent</a>
-    <div class="ws"><small>ESPACIO DE TRABAJO</small><br><b>Grupo Horizonte</b></div>
-    <small class="menu-title">GESTIÓN</small>
-    <a routerLink="/dashboard" class="on">Panel principal</a>
-    <a routerLink="/properties">Inmuebles</a>
-    <a routerLink="/contracts">Contratos</a>
-    <a routerLink="/payments">Pagos y cobranza</a>
-    <a routerLink="/properties">Inquilinos</a>
-    <a routerLink="/payments">Mantenimiento</a>
-    <a routerLink="/dashboard">Reportes</a>
-    <button type="button" class="side-link" (click)="openWorld()">🌎 Mundo</button>
-    <a routerLink="/currencies">💱 Monedas</a>
-    <small class="menu-title">ADMINISTRACIÓN</small>
-    <a routerLink="/properties">Propietarios</a>
-    <a routerLink="/dashboard">Configuración</a>
-    <small class="menu-title">VISTAS</small>
-    <a routerLink="/portal">👤 Vista de inquilino</a>
-  </aside>
-
-  <main>
+<main class="dashboard-content">
     <div class="top">
       <span>Grupo Horizonte / <b>Panel principal</b></span>
       <span class="top-tools">
@@ -84,40 +63,35 @@
         <div #propertyMap class="map-real"></div>
       </section>
     } @else {
-      <div class="head">
-        <div><p class="eyebrow">MERCADO INTERNACIONAL</p><h1>Mundo</h1><p class="sub">Mapa real dividido por los 193 Estados miembros de la ONU y alquileres registrados.</p></div>
-        <button class="btn" type="button" (click)="closeWorld()">← Volver al panel</button>
-      </div>
-      <div class="chips">
-        <button class="btn" [class.p]="worldType === 'Todos'" (click)="setWorldType('Todos')">Todos</button>
-        <button class="btn" [class.p]="worldType === 'APARTMENT'" (click)="setWorldType('APARTMENT')">Apartamentos</button>
-        <button class="btn" [class.p]="worldType === 'HOUSE'" (click)="setWorldType('HOUSE')">Casas</button>
-        <button class="btn" [class.p]="worldType === 'WAREHOUSE'" (click)="setWorldType('WAREHOUSE')">Bodegas</button>
-        <span class="sub">{{ filteredWorldListings().length }} inmuebles disponibles en el mapa</span>
-      </div>
-      <div class="world-layout">
-        <div class="card countries">
-          <button class="country-button" [class.on]="!selectedCountry" (click)="selectCountry('')"><b>🌎 Todo el mundo</b><span>193</span></button>
-          @for (country of worldCountries(); track country.code) {
-            <button class="country-button" [class.on]="selectedCountry === country.code" (click)="selectCountry(country.code)">
-              <span><b>{{ country.name }}</b><small>{{ country.capital }}</small></span><span>{{ countryCount(country.code) }}</span>
-            </button>
+      <section class="world-page">
+        <div class="world-header">
+          <div>
+            <span class="eyebrow">MERCADO INTERNACIONAL</span>
+            <h1>Mundo</h1>
+            <p>Mapa real dividido por los 193 Estados miembros de la ONU y alquileres registrados.</p>
+          </div>
+          <button class="btn" type="button" (click)="closeWorld()">← Volver al panel</button>
+        </div>
+
+        <div class="world-filters">
+          <button class="btn" [class.p]="worldType === 'Todos'" (click)="setWorldType('Todos')">Todos</button>
+          <button class="btn" [class.p]="worldType === 'APARTMENT'" (click)="setWorldType('APARTMENT')">Apartamentos</button>
+          <button class="btn" [class.p]="worldType === 'HOUSE'" (click)="setWorldType('HOUSE')">Casas</button>
+          <button class="btn" [class.p]="worldType === 'WAREHOUSE'" (click)="setWorldType('WAREHOUSE')">Bodegas</button>
+        </div>
+
+        <div #worldMap class="world-map"></div>
+
+        <div class="property-grid">
+          @for (listing of filteredWorldListings(); track listing.id) {
+            <article class="listing-card">
+              <div class="listing-head"><span>{{ listing.countryCode }} · {{ listing.city }}</span><small>{{ typeLabel(listing.propertyType) }}</small></div>
+              <div class="listing-body"><b>{{ formatRent(listing.monthlyRent, listing.currencyCode) }} <small>/ mes</small></b><p>{{ listing.title }}</p></div>
+            </article>
+          } @empty {
+            <div class="empty">No hay alquileres disponibles para este filtro.</div>
           }
         </div>
-        <div>
-          <div #worldMap class="map-real world-map"></div>
-          <div class="listing-grid">
-            @for (listing of filteredWorldListings(); track listing.id) {
-              <article class="listing-card">
-                <div class="listing-head"><span>{{ listing.countryCode }} · {{ listing.city }}</span><small>{{ typeLabel(listing.propertyType) }}</small></div>
-                <div class="listing-body"><b>{{ formatRent(listing.monthlyRent, listing.currencyCode) }} <small>/ mes</small></b><p>{{ listing.title }}</p></div>
-              </article>
-            } @empty {
-              <div class="empty">No hay alquileres disponibles para este filtro.</div>
-            }
-          </div>
-        </div>
-      </div>
+      </section>
     }
-  </main>
-</div>
+</main>

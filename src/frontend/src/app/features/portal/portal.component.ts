@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-portal',
@@ -13,7 +14,7 @@ import { RouterLink } from '@angular/router';
       </header>
       <main class="portal-main">
         <section class="portal-welcome">
-          <div><p class="eyebrow">MI ESPACIO</p><h1>Hola, Mariana.</h1><p>Todo lo importante de tu renta, en un solo lugar.</p></div>
+          <div><p class="eyebrow">MI ESPACIO</p><h1>Hola, {{ userName }}.</h1><p>Todo lo importante de tu renta, en un solo lugar.</p></div>
           <span class="tenant-status">Contrato vigente</span>
         </section>
         <section class="portal-grid">
@@ -22,7 +23,7 @@ import { RouterLink } from '@angular/router';
           <article class="portal-card"><span>Estado de cuenta</span><h2>$0.00</h2><p>Saldo pendiente</p><a routerLink="/payments" class="portal-text-link">Ver movimientos →</a></article>
         </section>
         <section class="portal-columns">
-          <article class="portal-card"><div class="portal-card-head"><h2>Mis solicitudes</h2><button type="button" class="portal-button ghost" (click)="notify('Solicitud iniciada')">Nueva solicitud</button></div><div class="request"><span class="request-dot open"></span><div><b>Fuga en baño principal</b><small>En proceso · Actualizado hoy</small></div></div><div class="request"><span class="request-dot done"></span><div><b>Cambio de foco en pasillo</b><small>Resuelto · 28 sep 2026</small></div></div></article>
+          <article class="portal-card"><div class="portal-card-head"><h2>Mis solicitudes</h2><a routerLink="/requests" class="portal-button ghost">Nueva solicitud</a></div><div class="request"><span class="request-dot open"></span><div><b>Fuga en baño principal</b><small>En proceso · Actualizado hoy</small></div></div><div class="request"><span class="request-dot done"></span><div><b>Cambio de foco en pasillo</b><small>Resuelto · 28 sep 2026</small></div></div></article>
           <article class="portal-card"><h2>Documentos</h2><a class="document" href="#documentos" (click)="notify('Descarga preparada')">Contrato de arrendamiento <span>PDF</span></a><a class="document" href="#documentos" (click)="notify('Descarga preparada')">Recibo de septiembre <span>PDF</span></a></article>
         </section>
       </main>
@@ -48,7 +49,12 @@ import { RouterLink } from '@angular/router';
   `],
 })
 export class PortalComponent {
+  private readonly auth = inject(AuthService);
   protected message = '';
+  protected get userName(): string {
+    return this.auth.getStoredUser()?.fullName?.split(' ')[0] || 'Usuario';
+  }
+
   protected notify(message: string): void {
     this.message = message;
     setTimeout(() => this.message = '', 2400);

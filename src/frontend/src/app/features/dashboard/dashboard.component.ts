@@ -50,7 +50,7 @@ export class DashboardComponent implements AfterViewInit, OnDestroy {
 
   constructor() {
     const fragment = window.location.hash.replace('#', '');
-    this.activeView = fragment === 'mundo' ? 'mundo' : 'panel';
+    this.activeView = fragment === 'mundo' || window.location.pathname === '/world' ? 'mundo' : 'panel';
     this.loadProperties();
   }
 

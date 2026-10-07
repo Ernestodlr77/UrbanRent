@@ -15,6 +15,8 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  loading = false;
+  errorMessage = '';
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -22,7 +24,9 @@ export class LoginComponent {
   });
 
   onSubmit(): void {
+    this.errorMessage = '';
     if (this.loginForm.valid) {
+      this.loading = true;
       const credentials = {
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!
@@ -30,10 +34,12 @@ export class LoginComponent {
 
       this.authService.login(credentials).subscribe({
         next: () => {
+          this.loading = false;
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {
-          alert('Error de autenticación: ' + (err.error?.message || 'Credenciales incorrectas'));
+          this.loading = false;
+          this.errorMessage = err.error?.message || 'Correo o contraseña incorrectos.';
         }
       });
     } else {

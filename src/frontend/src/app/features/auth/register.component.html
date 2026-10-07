@@ -33,7 +33,10 @@
         <input id="password" type="password" formControlName="password" class="form-control" placeholder="Mínimo 8 caracteres" minlength="8" />
         <p *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid" class="form-error">La contraseña debe tener al menos 8 caracteres.</p>
       </div>
-      <button type="submit" class="btn-submit" [disabled]="registerForm.invalid">Registrarme</button>
+      <button type="submit" class="btn-submit" [disabled]="registerForm.invalid || loading">
+        {{ loading ? 'Registrando...' : 'Registrarme' }}
+      </button>
+      <p *ngIf="errorMessage" class="form-error">{{ errorMessage }}</p>
     </form>
 
     <div class="auth-footer">

@@ -15,6 +15,8 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
+  loading = false;
+  errorMessage = '';
 
   registerForm = this.fb.group({
     fullName: ['', Validators.required],
@@ -25,7 +27,9 @@ export class RegisterComponent {
   });
 
   onSubmit(): void {
+    this.errorMessage = '';
     if (this.registerForm.valid) {
+      this.loading = true;
       const formValue = this.registerForm.getRawValue();
       const role = formValue.roleId === '2' ? 'LANDLORD' : 'TENANT';
 
@@ -36,8 +40,15 @@ export class RegisterComponent {
         password: formValue.password!,
         role
       }).subscribe({
-        next: () => this.router.navigate(['/login']),
-        error: (error) => alert(error.error?.message || 'No se pudo registrar la cuenta.')
+        next: () => {
+          this.loading = false;
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'No se pudo registrar la cuenta.';
+        }
       });
     } else {
       this.registerForm.markAllAsTouched();
