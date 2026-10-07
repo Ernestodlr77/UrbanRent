@@ -1,0 +1,516 @@
+{
+  "info": {
+    "name": "UrbanRent API",
+    "_postman_id": "urbanrent-rubrica-2026",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "propertyId",
+      "value": "1"
+    },
+    {
+      "key": "contractId",
+      "value": "1"
+    },
+    {
+      "key": "paymentId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Registro",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"fullName\": \"Usuario Demo\", \"email\": \"demo@urbanrent.com\", \"password\": \"UrbanRent123\", \"phone\": \"+502 5555-0000\", \"role\": \"TENANT\"}"
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"demo@urbanrent.com\", \"password\": \"UrbanRent123\"}"
+        }
+      }
+    },
+    {
+      "name": "Mi perfil",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Actualizar perfil",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "me"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"fullName\": \"Usuario Actualizado\", \"phone\": \"+502 5555-1111\"}"
+        }
+      }
+    },
+    {
+      "name": "Dashboard stats",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/dashboard/stats",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "dashboard",
+            "stats"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar propiedades paginado",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/properties?page=1&limit=12&search=&status=AVAILABLE",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "properties?page=1&limit=12&search=&status=AVAILABLE"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Propiedad por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/properties/{{propertyId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "properties",
+            "{{propertyId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear propiedad",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/properties",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "properties"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"landlordId\": 1, \"title\": \"Casa demo\", \"address\": \"Zona 10\", \"city\": \"Guatemala\", \"countryCode\": \"GTM\", \"countryName\": \"Guatemala\", \"propertyType\": \"HOUSE\", \"monthlyRent\": 1500, \"currencyCode\": \"GTQ\", \"latitude\": 14.6, \"longitude\": -90.5, \"status\": \"AVAILABLE\"}"
+        }
+      }
+    },
+    {
+      "name": "Actualizar propiedad",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/properties/{{propertyId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "properties",
+            "{{propertyId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"monthlyRent\": 1600}"
+        }
+      }
+    },
+    {
+      "name": "Eliminar propiedad",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/properties/{{propertyId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "properties",
+            "{{propertyId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar contratos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/contracts",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "contracts"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear contrato",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/contracts",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "contracts"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"propertyId\": 1, \"tenantId\": 2, \"startDate\": \"2026-01-01\", \"endDate\": \"2026-12-31\", \"monthlyAmount\": 1000, \"depositAmount\": 1000}"
+        }
+      }
+    },
+    {
+      "name": "Actualizar contrato",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/contracts/{{contractId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "contracts",
+            "{{contractId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"monthlyAmount\": 1100}"
+        }
+      }
+    },
+    {
+      "name": "Cambiar estado contrato",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/contracts/{{contractId}}/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "contracts",
+            "{{contractId}}",
+            "status"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"status\": \"COMPLETED\"}"
+        }
+      }
+    },
+    {
+      "name": "Eliminar contrato",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/contracts/{{contractId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "contracts",
+            "{{contractId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Listar pagos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/payments",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "payments"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crear pago",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/payments",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "payments"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"contractId\": 1, \"amount\": 1000, \"dueDate\": \"2026-01-05\", \"status\": \"PAID\"}"
+        }
+      }
+    },
+    {
+      "name": "Actualizar pago",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/payments/{{paymentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "payments",
+            "{{paymentId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"status\": \"PAID\", \"amount\": 1050}"
+        }
+      }
+    },
+    {
+      "name": "Eliminar pago",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/payments/{{paymentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "payments",
+            "{{paymentId}}"
+          ]
+        }
+      }
+    }
+  ]
+}
